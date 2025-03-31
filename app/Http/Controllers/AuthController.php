@@ -6,9 +6,51 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use OpenApi\Annotations as OA;
+
+/**
+ * @OA\Info(title="PET_STORE API", version="1.0.0")
+ * 
+ * @OA\Tag(
+ *     name="Авторизация",
+ *     description=""
+ * )
+ */
 
 class AuthController extends Controller
 {
+
+
+    /**
+     * @OA\Post(
+     *     path="/api/register",
+     *     tags={"Авторизация"},
+     *     summary="Регистрация",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"first_name", "last_name", "email","password", "password_confirmation"},
+     *             @OA\Property(property="first_name", type="string"),
+     *             @OA\Property(property="last_name", type="string"),
+     *             @OA\Property(property="email", type="string", format="email"),
+     *             @OA\Property(property="password", type="string", format="password"),
+     *             @OA\Property(property="password_confirmation", type="string", format="password"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="token", type="string"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -23,15 +65,44 @@ class AuthController extends Controller
         }
 
         $user = User::create([
+            'api_token' => Str::random(40),
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'none',
         ]);
 
-        return response()->json(['message' => 'Пользователь зарегистрирован', 'user' => $user], 201);
+        return response()->json(['token' => $user->api_token], 201);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/login",
+     *     tags={"Авторизация"},
+     *     summary="Авторизация",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email","password"},
+     *             @OA\Property(property="email", type="string", format="email"),
+     *             @OA\Property(property="password", type="string", format="password"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="token", type="string"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -49,15 +120,43 @@ class AuthController extends Controller
             return response()->json(['message' => 'Неверные данные'], 401);
         }
 
-        $token = $user->createToken('Personal Access Token')->plainTextToken;
+        // Генерация нового токена
+        $user->api_token = Str::random(40); // Генерация токена
+        $user->save(); // Сохранение нового токена в базе данных
 
-        return response()->json(['token' => $token], 200);
+        return response()->json(['token' => $user->api_token], 200);
     }
 
+
+
+    /**
+     * @OA\Post(
+     *     path="/api/logout",
+     *     tags={"Авторизация"},
+     *     summary="Выход",
+     *     @OA\RequestBody(
+     *         required=false,
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="error"
+     *     ),
+     *     security={{"bearerAuth": {}}}
+     * )
+     */
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $user = $request->user(); // Получаем текущего аутентифицированного пользователя
+        $user->api_token = null; // Устанавливаем токен в null
+        $user->save(); // Сохраняем изменения
 
-        return response()->json(['message' => 'Выход выполнен'], 200);
+        return response()->json(['message' => 'success'], 200);
     }
 }
