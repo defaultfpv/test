@@ -71,6 +71,27 @@ class ProductService
         }
 
         $products = $query->get();
+
+        if (isset($filters['sort'])) {
+            switch ($filters['sort']) {
+                case 'price_asc':
+                    $products = $products->sortBy('price');
+                    break;
+                case 'price_desc':
+                    $products = $products->sortByDesc('price');
+                    break;
+                case 'popularity':
+                    $products = $products->sortByDesc('count_sales');
+                    break;
+                default:
+                    // Если сортировка не распознана, можно оставить массив без изменений
+                    break;
+            }
+
+            // Преобразуем коллекцию обратно в массив, если это необходимо
+            // $products = $products->values()->all();
+        }
+
         $products = $this->filter_list_products($products);
         return $products;
     }
@@ -100,15 +121,15 @@ class ProductService
         $sort = [
             [
                 'title' => 'По популярности',
-                'value' => 'by_popularity'
+                'value' => 'count_sales'
             ],
             [
                 'title' => 'По возрастанию цены',
-                'value' => 'ascending_order'
+                'value' => 'price_asc'
             ],
             [
                 'title' => 'По убыванию цены',
-                'value' => 'descending_order'
+                'value' => 'price_desc'
             ]
         ];
         

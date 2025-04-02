@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description', 100);
             $table->text('structure', 500);
             $table->text('features', 500);
-            $table->integer('number_of_sales');
+            $table->integer('count_sales');
             $table->foreignId('sections_pets_id')->constrained('sections_pets')->onDelete('cascade');
             $table->integer('quantity');
             $table->integer('price');
