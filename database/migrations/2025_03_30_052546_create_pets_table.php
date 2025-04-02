@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('pets', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 20);
             $table->string('title', 100);
+            $table->text('image');
             $table->timestamps();
         });
     }

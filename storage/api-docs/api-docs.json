@@ -5,13 +5,13 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/register": {
+        "/auth/register": {
             "post": {
                 "tags": [
                     "Авторизация"
                 ],
-                "summary": "Регистрация",
-                "operationId": "8a56853624e025573120a09a4c75d468",
+                "summary": "Регистрация нового пользователя",
+                "operationId": "ed42f392010c301892e640067141676e",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -71,13 +71,13 @@
                 }
             }
         },
-        "/api/login": {
+        "/auth/login": {
             "post": {
                 "tags": [
                     "Авторизация"
                 ],
-                "summary": "Авторизация",
-                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "summary": "Авторизация пользователя",
+                "operationId": "8cb7742ae98d0990acb2907c4e00bf24",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -124,13 +124,13 @@
                 }
             }
         },
-        "/api/logout": {
+        "/auth/logout": {
             "post": {
                 "tags": [
                     "Авторизация"
                 ],
-                "summary": "Выход",
-                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "summary": "Выход пользователя",
+                "operationId": "0d29c740dc06d77602af8095bf4654cc",
                 "requestBody": {
                     "required": false
                 },
@@ -160,11 +160,216 @@
                     }
                 ]
             }
+        },
+        "/sections": {
+            "get": {
+                "tags": [
+                    "Каталог"
+                ],
+                "summary": "Получить все разделы",
+                "operationId": "70c9667db30002896e81cd0e2cda0e9e",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "section": {
+                                            "$ref": "#/components/schemas/Section"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/sections/{pet_id}": {
+            "get": {
+                "tags": [
+                    "Каталог"
+                ],
+                "summary": "Получить разделы по определенному питомцу",
+                "operationId": "94575cd0b4c5f6640b6d93ba07885634",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "section": {
+                                            "$ref": "#/components/schemas/Section"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pets": {
+            "get": {
+                "tags": [
+                    "Каталог"
+                ],
+                "summary": "Получить всех питомцев",
+                "operationId": "e709c89f4ea29ebb7dd474d74a6b74ac",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "pet": {
+                                            "$ref": "#/components/schemas/Pet"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pets/{section_id}": {
+            "get": {
+                "tags": [
+                    "Каталог"
+                ],
+                "summary": "Получить питомцев по определенному разделу",
+                "operationId": "45fc64b5db442b8481fca2f3124d8894",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "pet": {
+                                            "$ref": "#/components/schemas/Pet"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/me": {
+            "get": {
+                "tags": [
+                    "Пользователи"
+                ],
+                "summary": "Получить информацию о текущем пользователе",
+                "operationId": "93822e7fa3ac92492cc115b40ff437a9",
+                "requestBody": {
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Section": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "icon": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Pet": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
         }
     },
     "tags": [
         {
             "name": "Авторизация",
+            "description": ""
+        },
+        {
+            "name": "Пользователи",
+            "description": ""
+        },
+        {
+            "name": "Каталог",
             "description": ""
         }
     ]

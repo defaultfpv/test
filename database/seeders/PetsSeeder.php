@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Pets;
+use App\Models\Pet;
 
 class PetsSeeder extends Seeder
 {
@@ -13,29 +13,29 @@ class PetsSeeder extends Seeder
      */
     public function run(): void
     {
-        Pets::create([
-            'code' => '001',
+        Pet::create([
             'title' => 'Собаки',
+            'image' => '/путь/до/img/sobaki.webp',
         ]);
 
-        Pets::create([
-            'code' => '002',
+        Pet::create([
             'title' => 'Кошки',
+            'image' => '/путь/до/img/koshki.webp',
         ]);
 
-        Pets::create([
-            'code' => '003',
+        Pet::create([
             'title' => 'Пернатые',
+            'image' => '/путь/до/img/pernatie.webp',
         ]);
 
-        Pets::create([
-            'code' => '004',
+        Pet::create([
             'title' => 'Грызуны',
+            'image' => '/путь/до/img/spinogrizi.webp',
         ]);
 
-        Pets::create([
-            'code' => '005',
+        Pet::create([
             'title' => 'Рыбки',
+            'image' => '/путь/до/img/ribki.webp',
         ]);
 
     }

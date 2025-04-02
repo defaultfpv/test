@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Swagger\Swagger;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -9,24 +10,15 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use OpenApi\Annotations as OA;
 
-/**
- * @OA\Info(title="PET_STORE API", version="1.0.0")
- * 
- * @OA\Tag(
- *     name="Авторизация",
- *     description=""
- * )
- */
-
 class AuthController extends Controller
 {
 
 
     /**
      * @OA\Post(
-     *     path="/api/register",
+     *     path="/auth/register",
      *     tags={"Авторизация"},
-     *     summary="Регистрация",
+     *     summary="Регистрация нового пользователя",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -70,7 +62,7 @@ class AuthController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'none',
+            'role' => 'user',
         ]);
 
         return response()->json(['token' => $user->api_token], 201);
@@ -79,9 +71,9 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/login",
+     *     path="/auth/login",
      *     tags={"Авторизация"},
-     *     summary="Авторизация",
+     *     summary="Авторизация пользователя",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -131,9 +123,9 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/logout",
+     *     path="/auth/logout",
      *     tags={"Авторизация"},
-     *     summary="Выход",
+     *     summary="Выход пользователя",
      *     @OA\RequestBody(
      *         required=false,
      *     ),

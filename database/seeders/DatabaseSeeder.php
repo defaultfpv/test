@@ -5,13 +5,16 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Database\Seeders\UsersSeeder;
-use Database\Seeders\CatalogSeeder;
+use Database\Seeders\SectionsSeeder;
 use Database\Seeders\PetsSeeder;
 use Database\Seeders\FiltersSeeder;
-use Database\Seeders\CatalogFiltersSeeder;
-use Database\Seeders\PetsCatalogSeeder;
+use Database\Seeders\SectionsFiltersSeeder;
+use Database\Seeders\SectionsPetsSeeder;
 use Database\Seeders\OptionsSeeder;
 use Database\Seeders\FiltersOptionsSeeder;
+use Database\Seeders\ProductsSeeder;
+use Database\Seeders\ImagesSeeder;
+use Database\Seeders\ImagesProductsSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,11 +24,14 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(UsersSeeder::class);
-        $this->call(CatalogSeeder::class);
+        $this->call(SectionsSeeder::class);
         $this->call(PetsSeeder::class);
         $this->call(FiltersSeeder::class);
-        $this->call(CatalogFiltersSeeder::class);
-        $this->call(PetsCatalogSeeder::class);
+        $this->call(ImagesSeeder::class);
+        $this->call(SectionsPetsSeeder::class);
+        $this->call(ProductsSeeder::class);
+        $this->call(ImagesProductsSeeder::class);
+        $this->call(SectionsFiltersSeeder::class);
         $this->call(OptionsSeeder::class);
         $this->call(FiltersOptionsSeeder::class);
     }

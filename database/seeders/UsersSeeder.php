@@ -23,6 +23,8 @@ class UsersSeeder extends Seeder
                 'email' => 'admin@example.com',
                 'password' => Hash::make('admin000'),
                 'role' => 'admin',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
 
         ]);

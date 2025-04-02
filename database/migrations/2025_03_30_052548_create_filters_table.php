@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('filters', function (Blueprint $table) {
             $table->id();
             $table->string('title', 100);
+            $table->string('key1', 100);
+            $table->string('key2', 100)->default(null);
         });
     }
 
