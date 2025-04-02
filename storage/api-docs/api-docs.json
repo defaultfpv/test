@@ -265,6 +265,134 @@
                 }
             }
         },
+        "/products/{section_id}/{pet_id}": {
+            "get": {
+                "tags": [
+                    "Товары"
+                ],
+                "summary": "Получить список товаров по разделу и питомцу",
+                "operationId": "41a4e3b6ae0adf2dce76ef7393c11a34",
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Сортировка продуктов по популярности или цене",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "by_popularity"
+                        }
+                    },
+                    {
+                        "name": "min_price",
+                        "in": "query",
+                        "description": "Минимальная цена",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 100
+                        }
+                    },
+                    {
+                        "name": "max_price",
+                        "in": "query",
+                        "description": "Максимальная цена",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1000
+                        }
+                    },
+                    {
+                        "name": "maker",
+                        "in": "query",
+                        "description": "Марка",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "royal_canin"
+                        }
+                    },
+                    {
+                        "name": "age",
+                        "in": "query",
+                        "description": "Возраст",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "dlya_samih_malenkih"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "description": "Размер питомца",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "sredniy"
+                        }
+                    },
+                    {
+                        "name": "type_feel",
+                        "in": "query",
+                        "description": "Тип корма",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "suhoy"
+                        }
+                    },
+                    {
+                        "name": "type_additive",
+                        "in": "query",
+                        "description": "Тип добавки",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "lakomstvo"
+                        }
+                    },
+                    {
+                        "name": "purpose",
+                        "in": "query",
+                        "description": "Назначение товара",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "dekorativniy"
+                        }
+                    },
+                    {
+                        "name": "purpose2",
+                        "in": "query",
+                        "description": "Назначение товара2",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "dlya_ushey"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "сatalogPage": {
+                                            "$ref": "#/components/schemas/CatalogPage"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/users/me": {
             "get": {
                 "tags": [
@@ -333,6 +461,82 @@
                 },
                 "type": "object"
             },
+            "CatalogPage": {
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "count_products": {
+                        "type": "integer"
+                    },
+                    "sort": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "filters": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                },
+                                "key": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "options": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "title": {
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "products": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "price": {
+                                    "type": "integer"
+                                },
+                                "image": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "User": {
                 "properties": {
                     "id": {
@@ -370,6 +574,10 @@
         },
         {
             "name": "Каталог",
+            "description": ""
+        },
+        {
+            "name": "Товары",
             "description": ""
         }
     ]

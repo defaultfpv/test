@@ -22,22 +22,87 @@ class ProductsController extends Controller
     
 
 
-
+    /**
+    * @OA\Get(
+    *     path="/products/{section_id}/{pet_id}",
+    *     tags={"Товары"},
+    *     summary="Получить список товаров по разделу и питомцу",
+    *     @OA\Parameter(name="sort", in="query", required=false, description="Сортировка продуктов по популярности или цене", @OA\Schema(type="string", example="by_popularity")),
+    *     @OA\Parameter(name="min_price", in="query", required=false, description="Минимальная цена", @OA\Schema(type="integer", example=100)),
+    *     @OA\Parameter(name="max_price", in="query", required=false, description="Максимальная цена", @OA\Schema(type="integer", example=1000)),
+    *     @OA\Parameter(name="maker", in="query", required=false, description="Марка", @OA\Schema(type="string", example="royal_canin")),
+    *     @OA\Parameter(name="age", in="query", required=false, description="Возраст", @OA\Schema(type="string", example="dlya_samih_malenkih")),
+    *     @OA\Parameter(name="size", in="query", required=false, description="Размер питомца", @OA\Schema(type="string", example="sredniy")),
+    *     @OA\Parameter(name="type_feel", in="query", required=false, description="Тип корма", @OA\Schema(type="string", example="suhoy")),
+    *     @OA\Parameter(name="type_additive", in="query", required=false, description="Тип добавки", @OA\Schema(type="string", example="lakomstvo")),
+    *     @OA\Parameter(name="purpose", in="query", required=false, description="Назначение товара", @OA\Schema(type="string", example="dekorativniy")),
+    *     @OA\Parameter(name="purpose2", in="query", required=false, description="Назначение товара2", @OA\Schema(type="string", example="dlya_ushey")),
+    *     @OA\Response(
+    *         response=200,
+    *         description="Success",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="сatalogPage", type="object", ref="#/components/schemas/CatalogPage")
+    *         )
+    *     ),
+    * )
+    *
+    * @OA\Schema(
+    *      schema="CatalogPage",
+    *      @OA\Property(property="title", type="string"),
+    *      @OA\Property(property="count_products", type="integer"),
+    *      @OA\Property(property="sort",type="array",
+    *          @OA\Items(
+    *              @OA\Property(property="title", type="string"),
+    *              @OA\Property(property="value", type="string")
+    *          )
+    *      ),
+    *      @OA\Property(property="filters", type="array",
+    *          @OA\Items(
+    *              @OA\Property(property="title", type="string"),
+    *              @OA\Property(property="key", type="array",
+    *                  @OA\Items(type="string")
+    *              ),
+    *              @OA\Property(property="options", type="array",
+    *                  @OA\Items(
+    *                      @OA\Property(property="title", type="string"),
+    *                      @OA\Property(property="value", type="string")
+    *                  )
+    *              )
+    *          )
+    *      ),
+    *      @OA\Property(property="products", type="array",
+    *          @OA\Items(
+    *              @OA\Property(property="id", type="integer"),
+    *              @OA\Property(property="title", type="string"),
+    *              @OA\Property(property="price", type="integer"),
+    *              @OA\Property(property="image", type="string")
+    *          )
+    *      )
+    * )
+    *
+    */
     public function products($section_id, $pet_id)
     {
         $sections_pets = SectionsPets::where('pet_id', $pet_id)
         ->where('section_id', $section_id)
         ->get();
+
         if (!$sections_pets->isNotEmpty()) return response()->json(['message' => 'no results'], 200);
+
+        $filters = request()->query();
+        
         $page_title = $sections_pets->first()->title;
-
-        $products = $this->productService->products($sections_pets);
+        $products = $this->productService->products($sections_pets, $filters);
         $count = $products->count();
-
         $sort = $this->productService->sort();
-
         $filters = $this->productService->filters($section_id);
 
-        return response()->json(['title' => $page_title, 'count_products' => $count, 'sort' => $sort, 'filters' => $filters, 'products' => $products], 200);
+        return response()->json([
+            'title' => $page_title, 
+            'count_products' => $count, 
+            'sort' => $sort, 
+            'filters' => $filters, 
+            'products' => $products
+        ], 200);
     }
 }

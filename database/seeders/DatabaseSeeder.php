@@ -15,6 +15,7 @@ use Database\Seeders\FiltersOptionsSeeder;
 use Database\Seeders\ProductsSeeder;
 use Database\Seeders\ImagesSeeder;
 use Database\Seeders\ImagesProductsSeeder;
+use Database\Seeders\ProductsOptionsSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -34,5 +35,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SectionsFiltersSeeder::class);
         $this->call(OptionsSeeder::class);
         $this->call(FiltersOptionsSeeder::class);
+        $this->call(ProductsOptionsSeeder::class);
     }
 }

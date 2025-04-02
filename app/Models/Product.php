@@ -15,5 +15,10 @@ class Product extends Model
     {
         return $this->belongsToMany(Image::class, 'images_products');
     }
+
+    public function Options()
+    {
+        return $this->belongsToMany(Option::class, 'products_options');
+    }
     
 }
