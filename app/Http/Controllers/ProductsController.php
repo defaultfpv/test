@@ -49,7 +49,7 @@ class ProductsController extends Controller
  *                   format="binary"
  *                ),
  *                minItems=1
- *             ),
+ *             )
  *         )
  *     ),
  *     @OA\Response(
