@@ -30,3 +30,10 @@ Route::get('pets/{section_id?}', [CatalogController::class, 'pets']);
 // товары
 Route::middleware('auth:token')->post('product/{section_id}/{pet_id}', [ProductsController::class, 'create_product']);
 Route::get('products/{section_id}/{pet_id}', [ProductsController::class, 'products']);
+
+// изображения
+Route::get('/images/{filename}', function ($filename) {
+    $path = storage_path('app/public/images/' . $filename);
+    if (!File::exists($path)) abort(404);
+    return response()->file($path);
+});
