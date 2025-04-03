@@ -14,8 +14,7 @@ class VarietySeeder extends Seeder
     {
         // Пример заполнения таблицы variety
         DB::table('variety')->insert([
-            ['title' => 'Вес', 'section_id' => 1],
-            ['title' => 'Вес', 'section_id' => 2],
+            ['title' => 'Вес'],
         ]);
     }
 }

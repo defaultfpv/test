@@ -19,7 +19,84 @@ class ProductsController extends Controller
     {
         $this->productService = $productService;
     }
-    
+
+
+/**
+ * @OA\Post(
+ *     path="/product/{section_id}/{pet_id}",
+ *     tags={"Товары"},
+ *     summary="Добавить новый товар",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"title", "description", "structure", "features", "price", "images"},
+ *             @OA\Property(property="title", type="string"),
+ *             @OA\Property(property="description", type="string"),
+ *             @OA\Property(property="structure", type="string"),
+ *             @OA\Property(property="features", type="string"),
+ *             @OA\Property(property="price", type="string"),
+ *             @OA\Property(property="variety", type="array", nullable=true,
+ *                @OA\Items(
+ *                   required={"variety_id", "description", "price"},
+ *                   @OA\Property(property="variety_id", type="integer"),
+ *                   @OA\Property(property="description", type="string"),
+ *                   @OA\Property(property="price", type="integer"),
+ *                )
+ *             ),
+ *             @OA\Property(property="images", type="array",
+ *                @OA\Items(
+ *                   type="string",
+ *                   format="binary"
+ *                ),
+ *                minItems=1
+ *             ),
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Успешное добавление товара",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string"),
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Ошибка валидации",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string"),
+ *         )
+ *     ),
+ *     security={{"bearerAuth": {}}}
+ * )
+ */
+    public function create_product(Request $request, $section_id, $pet_id)
+    {
+        $user = $request->user();
+        if ($user->role != 'admin' and $user->role != 'manager') return response()->json(['message' =>"you don't have the rights to perform this action"], 200);
+
+        $section_pet = SectionsPets::where('pet_id', $pet_id)->where('section_id', $section_id)->first();
+        if ($section_pet) $section_pet_id = $section_pet->id;
+        else return response()->json(['message' => 'section not found'], 200);
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'structure' => 'required|string|max:255',
+            'features' => 'required|string|max:255',
+            'price' => 'required|integer',
+            'variety' => 'array',
+            'variety.*.variety_id' => 'required|integer',
+            'variety.*.description' => 'required|string',
+            'variety.*.price' => 'required|integer',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:12048',
+        ]);
+
+        $create = $this->productService->create($request, $section_pet_id);
+
+        return response()->json(['message' =>"Product created successfully!"], 201);
+
+    }
+
 
 
     /**
@@ -27,7 +104,7 @@ class ProductsController extends Controller
     *     path="/products/{section_id}/{pet_id}",
     *     tags={"Товары"},
     *     summary="Получить список товаров по разделу и питомцу",
-    *     @OA\Parameter(name="sort", in="query", required=false, description="Сортировка продуктов по популярности или цене", @OA\Schema(type="string", example="by_popularity")),
+    *     @OA\Parameter(name="sort", in="query", required=false, description="Сортировка продуктов по популярности или цене", @OA\Schema(type="string", example="popularity")),
     *     @OA\Parameter(name="min_price", in="query", required=false, description="Минимальная цена", @OA\Schema(type="integer", example=100)),
     *     @OA\Parameter(name="max_price", in="query", required=false, description="Максимальная цена", @OA\Schema(type="integer", example=1000)),
     *     @OA\Parameter(name="maker", in="query", required=false, description="Марка", @OA\Schema(type="string", example="royal_canin")),
@@ -105,4 +182,5 @@ class ProductsController extends Controller
             'products' => $products
         ], 200);
     }
+
 }

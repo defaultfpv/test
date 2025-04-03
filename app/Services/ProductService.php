@@ -3,66 +3,109 @@
 namespace App\Services;
 
 use App\Models\Product;
+use App\Models\ProductsVariety;
 use App\Models\Filter;
+use App\Models\Image;
 
 class ProductService
 {
+
+
+    // добавление нового товара
+    public function create($request, $section_pet_id)
+    {
+        $price = $this->price($request);
+
+        $product = Product::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'structure' => $request->structure,
+            'features' => $request->features,
+            'section_pet_id' => $section_pet_id,
+            'price' => $price,
+        ]);
+
+        if (isset($request['variety'])) {
+            foreach ($request['variety'] as $variety) {
+                ProductsVariety::create([
+                    'product_id' => $product->id,
+                    'variety_id' => $variety['variety_id'],
+                    'variety_description' => $variety['description'],
+                    'price' => $variety['price'],
+                ]);
+            }
+        }
+
+        if (isset($request['images'])) {
+            foreach ($request['images'] as $image) {
+                $path = $image->store('images', 'public'); // Сохраняем в storage/app/public/images
+                $imageRecord = Image::create([
+                    'path' => $path,
+                ]);
+
+                $product->images()->attach($imageRecord->id);
+            }
+        }
+    }
+
+
+    // получение минимальной цены для товара
+    public function price($request)
+    {
+        if (isset($request['variety'])) return collect($request['variety'])->min('price');
+        return $request->price;
+    }
+
+
+
     // получение товаров
-    public function products($sections_pets, $filters) {
+    public function products($sections_pets, $filters)
+    {
         $sections_pets_id = $sections_pets->first()->id;
         $query = Product::with('images')
         ->where('sections_pets_id', $sections_pets_id);
-
         if (isset($filters['min_price'])) {
             $query->where('price', '>=', $filters['min_price']);
         }
-
         if (isset($filters['max_price'])) {
             $query->where('price', '<=', $filters['max_price']);
         }
-
         if (isset($filters['maker'])) {
             $option_value = $filters['maker'];
             $query->whereHas('options', function($q) use ($option_value) {
                 $q->where('value', $option_value);
             });
         }
-
         if (isset($filters['age'])) {
             $option_value = $filters['age'];
             $query->whereHas('options', function($q) use ($option_value) {
                 $q->where('value', $option_value);
             });
         }
-
         if (isset($filters['size'])) {
             $option_value = $filters['size'];
             $query->whereHas('options', function($q) use ($option_value) {
                 $q->where('value', $option_value);
             });
         }
-
         if (isset($filters['type_feel'])) {
             $option_value = $filters['type_feel'];
             $query->whereHas('options', function($q) use ($option_value) {
                 $q->where('value', $option_value);
             });
         }
-
         if (isset($filters['type_additive'])) {
             $option_value = $filters['type_additive'];
             $query->whereHas('options', function($q) use ($option_value) {
                 $q->where('value', $option_value);
             });
         }
-
         if (isset($filters['purpose'])) {
             $option_value = $filters['purpose'];
             $query->whereHas('options', function($q) use ($option_value) {
                 $q->where('value', $option_value);
             });
         }
-
         if (isset($filters['purpose2'])) {
             $option_value = $filters['purpose2'];
             $query->whereHas('options', function($q) use ($option_value) {
@@ -87,14 +130,11 @@ class ProductService
                     // Если сортировка не распознана, можно оставить массив без изменений
                     break;
             }
-
-            // Преобразуем коллекцию обратно в массив, если это необходимо
-            // $products = $products->values()->all();
         }
-
         $products = $this->filter_list_products($products);
         return $products;
     }
+
 
     // фильтрация ключей списка товаров
     public function filter_list_products($products)
@@ -116,6 +156,7 @@ class ProductService
         });
     }
 
+
     // получение сортировки
     public function sort() {
         $sort = [
@@ -135,6 +176,7 @@ class ProductService
         
         return  $sort;
     }
+
 
     // получение фильтров
     public function filters($section_id) {

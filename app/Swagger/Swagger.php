@@ -24,6 +24,11 @@ namespace App\Swagger;
  * )
  * 
  * @OA\Tag(
+ *     name="Поиск",
+ *     description=""
+ * )
+ * 
+ * @OA\Tag(
  *     name="Товары",
  *     description=""
  * )

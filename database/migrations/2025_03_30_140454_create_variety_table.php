@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('variety', function (Blueprint $table) {
             $table->id();
             $table->string('title', 200);
-            $table->foreignId('section_id')->constrained('sections')->onDelete('cascade');
         });
     }
 

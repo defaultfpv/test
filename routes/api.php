@@ -28,6 +28,5 @@ Route::get('sections/{pet_id?}', [CatalogController::class, 'sections']);
 Route::get('pets/{section_id?}', [CatalogController::class, 'pets']);
 
 // товары
-Route::prefix('products')->group(function () {
-    Route::get('{section_id}/{pet_id}', [ProductsController::class, 'products']);
-});
+Route::middleware('auth:token')->post('product/{section_id}/{pet_id}', [ProductsController::class, 'create_product']);
+Route::get('products/{section_id}/{pet_id}', [ProductsController::class, 'products']);

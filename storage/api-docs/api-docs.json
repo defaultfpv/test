@@ -265,6 +265,118 @@
                 }
             }
         },
+        "/product/{section_id}/{pet_id}": {
+            "post": {
+                "tags": [
+                    "Товары"
+                ],
+                "summary": "Добавить новый товар",
+                "operationId": "819dbcf3ed87970f6271960f0f53c675",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "structure",
+                                    "features",
+                                    "price",
+                                    "images"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "structure": {
+                                        "type": "string"
+                                    },
+                                    "features": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "string"
+                                    },
+                                    "variety": {
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "variety_id",
+                                                "description",
+                                                "price"
+                                            ],
+                                            "properties": {
+                                                "variety_id": {
+                                                    "type": "integer"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "price": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "nullable": true
+                                    },
+                                    "images": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        },
+                                        "minItems": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Успешное добавление товара",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/products/{section_id}/{pet_id}": {
             "get": {
                 "tags": [
@@ -280,7 +392,7 @@
                         "required": false,
                         "schema": {
                             "type": "string",
-                            "example": "by_popularity"
+                            "example": "popularity"
                         }
                     },
                     {

@@ -21,7 +21,7 @@ class ProductsSeeder extends Seeder
                 'structure' => $faker->text(500),
                 'features' => $faker->text(500),
                 'count_sales' => $faker->numberBetween(40, 400),
-                'sections_pets_id' => $faker->numberBetween(1, 24),
+                'section_pet_id' => $faker->numberBetween(1, 24),
                 'quantity' => $faker->numberBetween(15, 500),
                 'price' => $faker->numberBetween(200, 5000),
                 'created_at' => now(),

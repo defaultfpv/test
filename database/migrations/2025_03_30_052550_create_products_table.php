@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 500);
-            $table->text('description', 100);
-            $table->text('structure', 500);
-            $table->text('features', 500);
-            $table->integer('count_sales');
-            $table->foreignId('sections_pets_id')->constrained('sections_pets')->onDelete('cascade');
-            $table->integer('quantity');
-            $table->integer('price');
+            $table->string('title', 500)->nullable();
+            $table->text('description', 100)->nullable();
+            $table->text('structure', 500)->nullable();
+            $table->text('features', 500)->nullable();
+            $table->integer('count_sales')->default(0);
+            $table->foreignId('section_pet_id')->constrained('sections_pets')->onDelete('cascade');
+            $table->integer('quantity')->default(0);
+            $table->integer('price')->nullable();
             $table->timestamps();
         });
     }

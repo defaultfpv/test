@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Database\Seeders\UsersSeeder;
 use Database\Seeders\SectionsSeeder;
+use Database\Seeders\VarietySeeder;
+use Database\Seeders\SectionsVarietySeeder;
 use Database\Seeders\PetsSeeder;
 use Database\Seeders\FiltersSeeder;
 use Database\Seeders\SectionsFiltersSeeder;
@@ -26,6 +28,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UsersSeeder::class);
         $this->call(SectionsSeeder::class);
+        $this->call(VarietySeeder::class);
+        $this->call(SectionsVarietySeeder::class);
         $this->call(PetsSeeder::class);
         $this->call(FiltersSeeder::class);
         $this->call(ImagesSeeder::class);
