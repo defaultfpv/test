@@ -18,6 +18,7 @@ use Database\Seeders\ProductsSeeder;
 use Database\Seeders\ImagesSeeder;
 use Database\Seeders\ImagesProductsSeeder;
 use Database\Seeders\ProductsOptionsSeeder;
+use Database\Seeders\ProductsVarietySeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -40,5 +41,6 @@ class DatabaseSeeder extends Seeder
         $this->call(OptionsSeeder::class);
         $this->call(FiltersOptionsSeeder::class);
         $this->call(ProductsOptionsSeeder::class);
+        $this->call(ProductsVarietySeeder::class);
     }
 }

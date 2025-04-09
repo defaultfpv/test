@@ -43,6 +43,11 @@ class ProductsController extends Controller
  *                   @OA\Property(property="price", type="integer"),
  *                )
  *             ),
+ *             @OA\Property(property="filters_options_value", type="array",
+ *                @OA\Items(
+ *                   type="string"
+ *                )
+ *             ),
  *             @OA\Property(property="images", type="array",
  *                @OA\Items(
  *                   type="string",
@@ -72,11 +77,11 @@ class ProductsController extends Controller
     public function create_product(Request $request, $section_id, $pet_id)
     {
         $user = $request->user();
-        if ($user->role != 'admin' and $user->role != 'manager') return response()->json(['message' =>"you don't have the rights to perform this action"], 200);
+        if ($user->role != 'admin' and $user->role != 'manager') return response()->json(['message' =>"you don't have the rights to perform this action"], 400);
 
         $section_pet = SectionsPets::where('pet_id', $pet_id)->where('section_id', $section_id)->first();
         if ($section_pet) $section_pet_id = $section_pet->id;
-        else return response()->json(['message' => 'section not found'], 200);
+        else return response()->json(['message' => 'section not found'], 400);
 
         $request->validate([
             'title' => 'required|string|max:255',
@@ -88,12 +93,14 @@ class ProductsController extends Controller
             'variety.*.variety_id' => 'required|integer',
             'variety.*.description' => 'required|string',
             'variety.*.price' => 'required|integer',
+            'filters_options_value' => 'array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:12048',
         ]);
 
-        $create = $this->productService->create($request, $section_pet_id);
+        $create = $this->productService->create($request, $section_id, $section_pet_id);
 
-        return response()->json(['message' =>"Product created successfully!"], 201);
+        if (!$create) return response()->json(['message' => "Product created successfully!"], 201);
+        else return response()->json(['message' => $create], 400);
 
     }
 

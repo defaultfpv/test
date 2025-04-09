@@ -324,6 +324,12 @@
                                         },
                                         "nullable": true
                                     },
+                                    "filters_options_value": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
                                     "images": {
                                         "type": "array",
                                         "items": {

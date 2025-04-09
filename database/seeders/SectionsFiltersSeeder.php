@@ -15,39 +15,39 @@ class SectionsFiltersSeeder extends Seeder
         // Пример заполнения таблицы sections_filters
         DB::table('sections_filters')->insert([
             ['section_id' => 1, 'filter_id' => 1],
-            ['section_id' => 1, 'filter_id' => 2],
-            ['section_id' => 1, 'filter_id' => 3],
-            ['section_id' => 1, 'filter_id' => 4],
-            ['section_id' => 1, 'filter_id' => 5],
-
             ['section_id' => 2, 'filter_id' => 1],
-            ['section_id' => 2, 'filter_id' => 2],
-            ['section_id' => 2, 'filter_id' => 3],
-            ['section_id' => 2, 'filter_id' => 4],
-            ['section_id' => 2, 'filter_id' => 6],
-
             ['section_id' => 3, 'filter_id' => 1],
-            ['section_id' => 3, 'filter_id' => 2],
-            ['section_id' => 3, 'filter_id' => 3],
-            ['section_id' => 3, 'filter_id' => 4],
-
             ['section_id' => 4, 'filter_id' => 1],
-            ['section_id' => 4, 'filter_id' => 2],
-            ['section_id' => 4, 'filter_id' => 3],
-            ['section_id' => 4, 'filter_id' => 4],
-
             ['section_id' => 5, 'filter_id' => 1],
-            ['section_id' => 5, 'filter_id' => 2],
-            ['section_id' => 5, 'filter_id' => 3],
-            ['section_id' => 5, 'filter_id' => 4],
-            ['section_id' => 5, 'filter_id' => 7],
-
             ['section_id' => 6, 'filter_id' => 1],
-            ['section_id' => 6, 'filter_id' => 2],
-            ['section_id' => 6, 'filter_id' => 3],
-            ['section_id' => 6, 'filter_id' => 8],
+
+            ['section_id' => 1, 'filter_id' => 2],
+            ['section_id' => 2, 'filter_id' => 3],
+            ['section_id' => 3, 'filter_id' => 4],
+            ['section_id' => 4, 'filter_id' => 5],
+            ['section_id' => 5, 'filter_id' => 6],
+            ['section_id' => 6, 'filter_id' => 7],
+
+            ['section_id' => 1, 'filter_id' => 8],
+            ['section_id' => 2, 'filter_id' => 9],
+
+            ['section_id' => 1, 'filter_id' => 10],
+            ['section_id' => 2, 'filter_id' => 10],
+            ['section_id' => 3, 'filter_id' => 10],
+            ['section_id' => 4, 'filter_id' => 10],
+            ['section_id' => 5, 'filter_id' => 10],
+            ['section_id' => 6, 'filter_id' => 10],
+
+            ['section_id' => 1, 'filter_id' => 11],
+            ['section_id' => 2, 'filter_id' => 11],
+            ['section_id' => 3, 'filter_id' => 11],
+            ['section_id' => 4, 'filter_id' => 11],
+            ['section_id' => 5, 'filter_id' => 11],
+            ['section_id' => 6, 'filter_id' => 11],
 
 
+            ['section_id' => 5, 'filter_id' => 12],
+            ['section_id' => 6, 'filter_id' => 13],
 
         ]);
     }

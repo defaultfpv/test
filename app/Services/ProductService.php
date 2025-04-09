@@ -3,19 +3,23 @@
 namespace App\Services;
 
 use App\Models\Product;
+use App\Models\Section;
+use App\Models\ProductsOptions;
+use App\Models\Option;
 use App\Models\ProductsVariety;
 use App\Models\Filter;
 use App\Models\Image;
 
 class ProductService
 {
-
-
+    
+    
     // добавление нового товара
-    public function create($request, $section_pet_id)
+    public function create($request, $section_id, $section_pet_id)
     {
+        
         $price = $this->price($request);
-
+        
         $product = Product::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -24,14 +28,25 @@ class ProductService
             'section_pet_id' => $section_pet_id,
             'price' => $price,
         ]);
-
+        
         if (isset($request['variety'])) {
             foreach ($request['variety'] as $variety) {
                 ProductsVariety::create([
-                    'product_id' => $product->id,
                     'variety_id' => $variety['variety_id'],
+                    'product_id' => $product->id,
                     'variety_description' => $variety['description'],
                     'price' => $variety['price'],
+                ]);
+            }
+        }
+        
+        if (isset($request['filters_options_value'])) {
+            foreach ($request['filters_options_value'] as $value) {
+                $option = Option::where('value', $value)->first();
+                if (!$option) return 'Option not found';
+                $productOption = ProductsOptions::create([
+                    'product_id' => $product->id,
+                    'option_id' => $option->id,
                 ]);
             }
         }
@@ -63,7 +78,7 @@ class ProductService
     {
         $sections_pets_id = $sections_pets->first()->id;
         $query = Product::with('images')
-        ->where('sections_pets_id', $sections_pets_id);
+        ->where('section_pet_id', $sections_pets_id);
         if (isset($filters['min_price'])) {
             $query->where('price', '>=', $filters['min_price']);
         }
@@ -102,12 +117,6 @@ class ProductService
         }
         if (isset($filters['purpose'])) {
             $option_value = $filters['purpose'];
-            $query->whereHas('options', function($q) use ($option_value) {
-                $q->where('value', $option_value);
-            });
-        }
-        if (isset($filters['purpose2'])) {
-            $option_value = $filters['purpose2'];
             $query->whereHas('options', function($q) use ($option_value) {
                 $q->where('value', $option_value);
             });
