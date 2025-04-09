@@ -15,38 +15,38 @@ class SectionsSeeder extends Seeder
     {
         Section::create([
             'title' => 'Корм',
-            'icon' => '/путь/до/icons/korm.webp',
-            'image' => '/путь/до/img/korm.webp',
+            'icon' => 'images/i-korm.png',
+            'image' => 'images/korm.png',
         ]);
 
         Section::create([
             'title' => 'Добавки',
-            'icon' => '/путь/до/icons/dobavki.webp',
-            'image' => '/путь/до/img/dobavki.webp',
+            'icon' => 'images/i-dobavki.png',
+            'image' => 'images/dobavki.png',
         ]);
 
         Section::create([
             'title' => 'Игрушки',
-            'icon' => '/путь/до/icons/igrushki.webp',
-            'image' => '/путь/до/img/igrushki.webp',
+            'icon' => 'images/i-igruwki.png',
+            'image' => 'images/igruwki.png',
         ]);
 
         Section::create([
             'title' => 'Домики',
-            'icon' => '/путь/до/icons/domiki.webp',
-            'image' => '/путь/до/img/domiki.webp',
+            'icon' => 'images/i-domiki.png',
+            'image' => 'images/domiki.png',
         ]);
 
         Section::create([
             'title' => 'Амуниция',
-            'icon' => '/путь/до/icons/amuniciya.webp',
-            'image' => '/путь/до/img/amuniciya.webp',
+            'icon' => 'images/i-amunicaiya.png',
+            'image' => 'images/amunicaiya.png',
         ]);
 
         Section::create([
             'title' => 'Уход',
-            'icon' => '/путь/до/icons/uhod.webp',
-            'image' => '/путь/до/img/uhod.webp',
+            'icon' => 'images/i-uhod.png',
+            'image' => 'images/uhod.png',
         ]);
     }
 }
