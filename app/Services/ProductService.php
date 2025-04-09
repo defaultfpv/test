@@ -9,11 +9,55 @@ use App\Models\Option;
 use App\Models\ProductsVariety;
 use App\Models\Filter;
 use App\Models\Image;
+use App\Models\Variety;
 
 class ProductService
 {
     
-    
+    // получить один товар
+    public static function product($product_id)
+    {
+        $product =Product::with('images')->find($product_id);
+        unset($product['created_at']);
+        unset($product['updated_at']);
+        unset($product['count_sales']);
+        unset($product['section_pet_id']);
+        unset($product['quantity']);
+        
+        $images = $product['images'];
+        unset($product['images']);
+        foreach ($images as $image) {
+            $images_pathes[] = $image['path'];
+        }
+        $product['images'] = $images_pathes;
+
+        $check = ProductsVariety::find($product_id);
+        if ($check) {
+            $products_variety = ProductsVariety::where('product_id', $product_id)->get();
+            $x = 0;
+            foreach ($products_variety as $product_variety) {
+                $variety = Variety::find($product_variety['variety_id']);
+                $varietyes[$variety['title']][$x]['description'] = $product_variety['variety_description'];
+                $varietyes[$variety['title']][$x]['price'] = $product_variety['price'];
+                $x++;
+            }
+            $product['variety'] = $varietyes;
+        }
+
+        $options = $product->options;
+        unset($product['options']);
+        foreach ($options as $option) {
+            $filters[] = [
+                'title' => $option->filters[0]['title'],
+                'value' => $option['title']
+            ];
+        }
+        if (isset($filters)) $product['specifications'] = $filters;
+
+        return $product;
+    }
+
+
     // добавление нового товара
     public function create($request, $section_id, $section_pet_id)
     {

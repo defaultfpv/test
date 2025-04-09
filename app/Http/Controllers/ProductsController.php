@@ -21,59 +21,59 @@ class ProductsController extends Controller
     }
 
 
-/**
- * @OA\Post(
- *     path="/product/{section_id}/{pet_id}",
- *     tags={"Товары"},
- *     summary="Добавить новый товар",
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(
- *             required={"title", "description", "structure", "features", "price", "images"},
- *             @OA\Property(property="title", type="string"),
- *             @OA\Property(property="description", type="string"),
- *             @OA\Property(property="structure", type="string"),
- *             @OA\Property(property="features", type="string"),
- *             @OA\Property(property="price", type="string"),
- *             @OA\Property(property="variety", type="array", nullable=true,
- *                @OA\Items(
- *                   required={"variety_id", "description", "price"},
- *                   @OA\Property(property="variety_id", type="integer"),
- *                   @OA\Property(property="description", type="string"),
- *                   @OA\Property(property="price", type="integer"),
- *                )
- *             ),
- *             @OA\Property(property="filters_options_value", type="array",
- *                @OA\Items(
- *                   type="string"
- *                )
- *             ),
- *             @OA\Property(property="images", type="array",
- *                @OA\Items(
- *                   type="string",
- *                   format="binary"
- *                ),
- *                minItems=1
- *             )
- *         )
- *     ),
- *     @OA\Response(
- *         response=201,
- *         description="Успешное добавление товара",
- *         @OA\JsonContent(
- *             @OA\Property(property="message", type="string"),
- *         )
- *     ),
- *     @OA\Response(
- *         response=400,
- *         description="Ошибка валидации",
- *         @OA\JsonContent(
- *             @OA\Property(property="message", type="string"),
- *         )
- *     ),
- *     security={{"bearerAuth": {}}}
- * )
- */
+    /**
+    * @OA\Post(
+    *     path="/product/{section_id}/{pet_id}",
+    *     tags={"Товары"},
+    *     summary="Добавить новый товар",
+    *     @OA\RequestBody(
+    *         required=true,
+    *         @OA\JsonContent(
+    *             required={"title", "description", "structure", "features", "price", "images"},
+    *             @OA\Property(property="title", type="string"),
+    *             @OA\Property(property="description", type="string"),
+    *             @OA\Property(property="structure", type="string"),
+    *             @OA\Property(property="features", type="string"),
+    *             @OA\Property(property="price", type="string"),
+    *             @OA\Property(property="variety", type="array", nullable=true,
+    *                @OA\Items(
+    *                   required={"variety_id", "description", "price"},
+    *                   @OA\Property(property="variety_id", type="integer"),
+    *                   @OA\Property(property="description", type="string"),
+    *                   @OA\Property(property="price", type="integer"),
+    *                )
+    *             ),
+    *             @OA\Property(property="filters_options_value", type="array",
+    *                @OA\Items(
+    *                   type="string"
+    *                )
+    *             ),
+    *             @OA\Property(property="images", type="array",
+    *                @OA\Items(
+    *                   type="string",
+    *                   format="binary"
+    *                ),
+    *                minItems=1
+    *             )
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=201,
+    *         description="Успешное добавление товара",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="message", type="string"),
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="Ошибка валидации",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="message", type="string"),
+    *         )
+    *     ),
+    *     security={{"bearerAuth": {}}}
+    * )
+    */
     public function create_product(Request $request, $section_id, $pet_id)
     {
         $user = $request->user();
@@ -102,6 +102,62 @@ class ProductsController extends Controller
         if (!$create) return response()->json(['message' => "Product created successfully!"], 201);
         else return response()->json(['message' => $create], 400);
 
+    }
+
+
+
+       /**
+    * @OA\Get(
+    *     path="/products/{product_id}",
+    *     tags={"Товары"},
+    *     summary="Получить товар",
+    *     @OA\Response(
+    *         response=200,
+    *         description="Success",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="product", type="object", ref="#/components/schemas/Product")
+    *         )
+    *     ),
+    * )
+    *
+    * @OA\Schema(
+    *      schema="Product",
+    *      @OA\Property(property="id", type="integer"),
+    *      @OA\Property(property="title", type="string"),
+    *      @OA\Property(property="description", type="string"),
+    *      @OA\Property(property="structure", type="string"),
+    *      @OA\Property(property="features", type="string"),
+    *      @OA\Property(property="price", type="integer"),
+    *      @OA\Property(property="images", type="array",
+    *          @OA\Items(
+    *              type="string"
+    *          )
+    *      ),
+    *      @OA\Property(property="variety", type="array",
+    *          @OA\Items(
+    *              @OA\Property(property="variety_title", type="array",
+    *                  @OA\Items(
+    *                      @OA\Property(property="description", type="string"),
+    *                      @OA\Property(property="price", type="integer")
+    *                  )
+    *              )
+    *          )
+    *      ),
+    *      @OA\Property(property="specifications", type="array",
+    *          @OA\Items(
+    *              @OA\Property(property="title", type="string"),
+    *              @OA\Property(property="value", type="string")
+    *          )
+    *      )
+    * )
+    *
+    */
+    public function product($product_id)
+    {
+        $check = Product::find($product_id);
+        if (!$check) return response()->json(['message' => 'product not found'], 404);
+        $product = $this->productService->product($product_id);
+        return response()->json($product, 200);
     }
 
 

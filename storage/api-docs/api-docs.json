@@ -383,6 +383,32 @@
                 ]
             }
         },
+        "/products/{product_id}": {
+            "get": {
+                "tags": [
+                    "Товары"
+                ],
+                "summary": "Получить товар",
+                "operationId": "00b58b3ecec2f83040d3520c6985be50",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "product": {
+                                            "$ref": "#/components/schemas/Product"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/products/{section_id}/{pet_id}": {
             "get": {
                 "tags": [
@@ -575,6 +601,71 @@
                     },
                     "image": {
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Product": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "structure": {
+                        "type": "string"
+                    },
+                    "features": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "variety": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "variety_title": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "price": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "specifications": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
                     }
                 },
                 "type": "object"
