@@ -246,4 +246,35 @@ class ProductsController extends Controller
         ], 200);
     }
 
+
+    /**
+    * @OA\Get(
+    *     path="/related/products/{product_id}",
+    *     tags={"Товары"},
+    *     summary="Получить похожие товары",
+    *     @OA\Response(
+    *         response=200,
+    *         description="Success",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="products",type="array",
+    *                 @OA\Items(
+    *                     @OA\Property(property="id", type="integer"),
+    *                     @OA\Property(property="title", type="string"),
+    *                     @OA\Property(property="price", type="integer"),
+    *                     @OA\Property(property="image", type="string")
+    *                 )
+    *             ),
+    *         )
+    *     ),
+    * )
+    */
+    public function related($product_id)
+    {
+        // return response()->json(['products' => 'lol'], 200);
+        $check = Product::find($product_id);
+        if (!$check) return response()->json(['message' => 'product not found'], 404);
+        $products = $this->productService->related($product_id);
+        return response()->json(['products' => $products], 200);
+    }
+
 }

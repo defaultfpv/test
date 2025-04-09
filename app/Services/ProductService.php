@@ -264,4 +264,14 @@ class ProductService
             return $result;
         });
     }
+
+
+    // получение списка похожих товаров
+    public function related($product_id)
+    {
+        $product = Product::find($product_id);
+        $products = Product::with('images')->where('section_pet_id', $product['section_pet_id'])->get();
+        $products = $this->filter_list_products($products);
+        return $products;
+    }
 }

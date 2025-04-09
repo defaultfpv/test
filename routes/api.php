@@ -31,6 +31,7 @@ Route::get('pets/{section_id?}', [CatalogController::class, 'pets']);
 Route::middleware('auth:token')->post('product/{section_id}/{pet_id}', [ProductsController::class, 'create_product']);
 Route::get('products/{section_id}/{pet_id}', [ProductsController::class, 'products']);
 Route::get('product/{product_id}', [ProductsController::class, 'product']);
+Route::get('related/products/{product_id}', [ProductsController::class, 'related']);
 
 // изображения
 Route::get('/images/{filename}', function ($filename) {
