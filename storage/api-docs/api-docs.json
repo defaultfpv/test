@@ -613,6 +613,37 @@
                     }
                 ]
             }
+        },
+        "/users/changerole/{user_id}": {
+            "post": {
+                "tags": [
+                    "Пользователи"
+                ],
+                "summary": "Сменить роль пользователю: user/manager",
+                "operationId": "575e3300761b0d0f792db68ef4d51494",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {

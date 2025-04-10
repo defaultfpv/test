@@ -48,9 +48,33 @@ class UsersController extends Controller
     */
     public function me(Request $request)
     {
-        $user = $request->user(); // Получаем текущего аутентифицированного пользователя
-        if (is_null($user)) return response()->json(['user' => 'guest'], 200);
+        $user = $request->user();
         $filter = $this->userService->filter($user);
         return response()->json(['user' => $filter], 200);
+    }
+
+
+    /**
+    * @OA\Post(
+    *     path="/users/changerole/{user_id}",
+    *     tags={"Пользователи"},
+    *     summary="Сменить роль пользователю: user/manager", 
+    *     @OA\Response(
+    *         response=200,
+    *         description="Success",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="message", type="string")
+    *         )
+    *     ),
+    *     security={{"bearerAuth": {}}}
+    * )
+    */
+    public function changerole(Request $request, $user_id)
+    {
+        $user = $request->user();
+        if ($user['role'] != 'admin') return response()->json(['message' => 'Это действие может выполнить только администратор'], 403);
+        $changeRole = $this->userService->change_role($user_id);
+        if (!$changeRole) return response()->json(['message' => 'user not found'], 404);
+        return response()->json(['message' => 'success'], 200);
     }
 }

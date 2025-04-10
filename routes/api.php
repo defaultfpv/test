@@ -18,9 +18,10 @@ Route::prefix('auth')->group(function () {
     Route::middleware('auth:token')->post('logout', [AuthController::class, 'logout']);
 });
 
-// информация о пользователях
+// Пользователи
 Route::prefix('users')->group(function () {
     Route::middleware('auth:token')->get('me', [UsersController::class, 'me']);
+    Route::middleware('auth:token')->post('changerole/{user_id}', [UsersController::class, 'changerole']);
 });
 
 // каталог
