@@ -271,7 +271,7 @@
                     "Товары"
                 ],
                 "summary": "Добавить новый товар",
-                "operationId": "819dbcf3ed87970f6271960f0f53c675",
+                "operationId": "653e063a665ce64ef981fce3f0198f44",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -374,6 +374,25 @@
                                 }
                             }
                         }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/product/{product_id}": {
+            "delete": {
+                "tags": [
+                    "Товары"
+                ],
+                "summary": "Удалить товар",
+                "operationId": "28222a97527728e3cbd4547f862a3741",
+                "responses": {
+                    "204": {
+                        "description": "Товар успешно удален"
                     }
                 },
                 "security": [

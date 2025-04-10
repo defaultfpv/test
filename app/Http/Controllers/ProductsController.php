@@ -74,10 +74,10 @@ class ProductsController extends Controller
     *     security={{"bearerAuth": {}}}
     * )
     */
-    public function create_product(Request $request, $section_id, $pet_id)
+    public function create(Request $request, $section_id, $pet_id)
     {
         $user = $request->user();
-        if ($user->role != 'admin' and $user->role != 'manager') return response()->json(['message' =>"you don't have the rights to perform this action"], 400);
+        if ($user->role != 'admin' and $user->role != 'manager') return response()->json(['message' =>"you don't have the rights to perform this action"], 403);
 
         $section_pet = SectionsPets::where('pet_id', $pet_id)->where('section_id', $section_id)->first();
         if ($section_pet) $section_pet_id = $section_pet->id;
@@ -102,6 +102,30 @@ class ProductsController extends Controller
         if (!$create) return response()->json(['message' => "Product created successfully!"], 201);
         else return response()->json(['message' => $create], 400);
 
+    }
+
+
+    /**
+    * @OA\Delete(
+    *     path="/product/{product_id}",
+    *     tags={"Товары"},
+    *     summary="Удалить товар",
+    *     @OA\Response(
+    *         response=204,
+    *         description="Товар успешно удален"
+    *     ),
+    *     security={{"bearerAuth": {}}}
+    * )
+    */
+    public function delete(Request $request, $product_id)
+    {
+        $user = $request->user();
+        if ($user->role != 'admin' and $user->role != 'manager') return response()->json(['message' =>"you don't have the rights to perform this action"], 403);
+
+        $delete = $this->productService->delete($product_id);
+
+        if (!$delete) return response()->json(['message' => 'product not found'], 404);
+        return response()->json(['message' => 'success'], 204);
     }
 
 

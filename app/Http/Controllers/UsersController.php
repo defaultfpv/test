@@ -77,7 +77,7 @@ class UsersController extends Controller
     public function all(Request $request)
     {
         $user = $request->user();
-        if ($user['role'] != 'admin') return response()->json(['message' => 'Это действие может выполнить только администратор'], 403);
+        if ($user['role'] != 'admin') return response()->json(['message' => 'you dont have the rights to perform this action'], 403);
         $users = $this->userService->users();
         return response()->json(['users' => $users], 200);
     }
@@ -107,9 +107,9 @@ class UsersController extends Controller
     public function search(Request $request)
     {
         $user = $request->user();
-        if ($user['role'] != 'admin') return response()->json(['message' => 'Это действие может выполнить только администратор'], 403);
+        if ($user['role'] != 'admin') return response()->json(['message' => 'you dont have the rights to perform this action'], 403);
         $get = request()->query();
-        if (!array_key_exists('search', $_GET)) return response()->json(['message' => 'Не найден необходимый ключ'], 403);
+        if (!array_key_exists('search', $_GET)) return response()->json(['message' => 'The required key was not found'], 400);
         $users = $this->userService->search($_GET['search']);
         if (!$users) return response()->json(['massage' => 'not resoult'], 404);
         return response()->json(['users' => $users], 200);
@@ -135,7 +135,7 @@ class UsersController extends Controller
     public function changerole(Request $request, $user_id)
     {
         $user = $request->user();
-        if ($user['role'] != 'admin') return response()->json(['message' => 'Это действие может выполнить только администратор'], 403);
+        if ($user['role'] != 'admin') return response()->json(['message' => 'you dont have the rights to perform this action'], 403);
         $changeRole = $this->userService->change_role($user_id);
         if (!$changeRole) return response()->json(['message' => 'user not found'], 404);
         return response()->json(['message' => 'success'], 200);

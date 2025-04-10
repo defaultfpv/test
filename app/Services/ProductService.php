@@ -274,4 +274,14 @@ class ProductService
         $products = $this->filter_list_products($products);
         return $products;
     }
+
+
+    // удаление товара
+    public function delete($product_id)
+    {
+        $product = Product::find($product_id);
+        if (!$product) return false;
+        $product->delete();
+        return true;
+    }
 }
