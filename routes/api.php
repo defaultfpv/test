@@ -39,3 +39,9 @@ Route::get('/images/{filename}', function ($filename) {
     if (!File::exists($path)) abort(404);
     return response()->file($path);
 });
+
+// корзина
+Route::prefix('users')->group(function () {
+    Route::middleware('auth:token')->get('me', [UsersController::class, 'me']);
+});
+
