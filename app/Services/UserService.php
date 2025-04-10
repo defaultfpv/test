@@ -6,6 +6,18 @@ use App\Models\User;
 
 class UserService
 {
+
+    // смена роли пользователю
+    public function users()
+    {
+        $allUsers = User::all();
+        foreach ($allUsers as $user) {
+            if ($user['role'] === 'admin') continue;
+            $users[] = $this->filter($user);
+        }
+        return $users;
+    }
+
     // фильтрация информации о пользователе
     public function filter($user)
     {

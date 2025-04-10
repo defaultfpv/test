@@ -55,6 +55,35 @@ class UsersController extends Controller
 
 
     /**
+    * @OA\Get(
+    *     path="/users",
+    *     tags={"Пользователи"},
+    *     summary="Получить список всех пользователей", 
+    *     @OA\Response(
+    *         response=200,
+    *         description="Success",
+    *         @OA\JsonContent(
+    *             type="object",
+    *             @OA\Property(property="users", type="array",
+    *                 @OA\Items(
+    *                     ref="#/components/schemas/User"
+    *                 )
+    *             )
+    *         )
+    *     ),
+    *     security={{"bearerAuth": {}}}
+    * )
+    */
+    public function all(Request $request)
+    {
+        $user = $request->user();
+        if ($user['role'] != 'admin') return response()->json(['message' => 'Это действие может выполнить только администратор'], 403);
+        $users = $this->userService->users();
+        return response()->json(['users' => $users], 200);
+    }
+
+
+    /**
     * @OA\Post(
     *     path="/users/changerole/{user_id}",
     *     tags={"Пользователи"},

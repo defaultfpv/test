@@ -614,6 +614,40 @@
                 ]
             }
         },
+        "/users": {
+            "get": {
+                "tags": [
+                    "Пользователи"
+                ],
+                "summary": "Получить список всех пользователей",
+                "operationId": "5db5c8bc06d169d0f1f213046d700bdc",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "users": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/User"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/users/changerole/{user_id}": {
             "post": {
                 "tags": [
