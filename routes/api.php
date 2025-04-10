@@ -32,6 +32,7 @@ Route::get('pets/{section_id?}', [CatalogController::class, 'pets']);
 
 // товары
 Route::middleware('auth:token')->post('product/{section_id}/{pet_id}', [ProductsController::class, 'create']);
+Route::middleware('auth:token')->put('product/{product_id}', [ProductsController::class, 'update']);
 Route::middleware('auth:token')->delete('product/{product_id}', [ProductsController::class, 'delete']);
 Route::get('products/{section_id}/{pet_id}', [ProductsController::class, 'products']);
 Route::get('product/{product_id}', [ProductsController::class, 'product']);

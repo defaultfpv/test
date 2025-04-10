@@ -105,6 +105,78 @@ class ProductsController extends Controller
     }
 
 
+
+ /**
+ * @OA\Put(
+ *     path="/product/{product_id}",
+ *     tags={"Товары"},
+ *     summary="Редактировать товар",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"title", "description", "structure", "features", "price", "images"},
+ *             @OA\Property(property="title", type="string"),
+ *             @OA\Property(property="description", type="string"),
+ *             @OA\Property(property="structure", type="string"),
+ *             @OA\Property(property="features", type="string"),
+ *             @OA\Property(property="price", type="string"),
+ *             @OA\Property(property="variety", type="array", nullable=true,
+ *                @OA\Items(
+ *                   required={"variety_id", "description", "price"},
+ *                   @OA\Property(property="variety_id", type="integer"),
+ *                   @OA\Property(property="description", type="string"),
+ *                   @OA\Property(property="price", type="integer")
+ *                )
+ *             ),
+ *             @OA\Property(property="filters_options_value", type="array",
+ *                @OA\Items(
+ *                   type="string"
+ *                )
+ *             ),
+ *             @OA\Property(property="images", type="array",
+ *                @OA\Items(
+ *                   type="string",
+ *                   format="binary"
+ *                ),
+ *                minItems=1
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(response=204, description="Товар успешно обновлен"),
+ *     security={{"bearerAuth": {}}}
+ * )
+ */
+
+    public function update(Request $request, $product_id)
+    {
+        $user = $request->user();
+        if ($user->role != 'admin' and $user->role != 'manager') return response()->json(['message' =>"you don't have the rights to perform this action"], 403);
+
+        $check = Product::find($product_id);
+        if (!$check) return response()->json(['message' => "Product not found"], 404);
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'structure' => 'required|string|max:255',
+            'features' => 'required|string|max:255',
+            'price' => 'required|integer',
+            'variety' => 'array',
+            'variety.*.variety_id' => 'required|integer',
+            'variety.*.description' => 'required|string',
+            'variety.*.price' => 'required|integer',
+            'filters_options_value' => 'array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:12048',
+        ]);
+
+        $update = $this->productService->update($request, $product_id);
+
+        if (!$update) return response()->json(['message' => "Product updated successfully!"], 204);
+        else return response()->json(['message' => $update], 400);
+
+    }
+
+
     /**
     * @OA\Delete(
     *     path="/product/{product_id}",

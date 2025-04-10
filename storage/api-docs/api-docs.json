@@ -384,6 +384,95 @@
             }
         },
         "/product/{product_id}": {
+            "put": {
+                "tags": [
+                    "Товары"
+                ],
+                "summary": "Редактировать товар",
+                "operationId": "5da7bbdeba060620031431e312ba8e10",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "structure",
+                                    "features",
+                                    "price",
+                                    "images"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "structure": {
+                                        "type": "string"
+                                    },
+                                    "features": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "string"
+                                    },
+                                    "variety": {
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "variety_id",
+                                                "description",
+                                                "price"
+                                            ],
+                                            "properties": {
+                                                "variety_id": {
+                                                    "type": "integer"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "price": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "nullable": true
+                                    },
+                                    "filters_options_value": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "images": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        },
+                                        "minItems": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Товар успешно обновлен"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
             "delete": {
                 "tags": [
                     "Товары"

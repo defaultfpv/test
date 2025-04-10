@@ -7,6 +7,7 @@ use App\Models\Section;
 use App\Models\ProductsOptions;
 use App\Models\Option;
 use App\Models\ProductsVariety;
+use App\Models\ImagesProducts;
 use App\Models\Filter;
 use App\Models\Image;
 use App\Models\Variety;
@@ -283,5 +284,58 @@ class ProductService
         if (!$product) return false;
         $product->delete();
         return true;
+    }
+
+
+
+    // редактирование товара
+    public function update($request, $product_id)
+    {
+        $price = $this->price($request);
+
+        $product = Product::find($product_id);
+
+        $product->title = $request->title;
+        $product->description = $request->description;
+        $product->structure = $request->structure;
+        $product->features = $request->features;
+        $product->price = $price;
+        $product->save();
+
+        
+        if (isset($request['variety'])) {
+            ProductsVariety::where('product_id', $product_id)->delete();
+            foreach ($request['variety'] as $variety) {
+                ProductsVariety::create([
+                    'variety_id' => $variety['variety_id'],
+                    'product_id' => $product->id,
+                    'variety_description' => $variety['description'],
+                    'price' => $variety['price'],
+                ]);
+            }
+        }
+        
+        if (isset($request['filters_options_value'])) {
+            ProductsOptions::where('product_id', $product_id)->delete();
+            foreach ($request['filters_options_value'] as $value) {
+                $option = Option::where('value', $value)->first();
+                if (!$option) return 'Option not found';
+                $productOption = ProductsOptions::create([
+                    'product_id' => $product->id,
+                    'option_id' => $option->id,
+                ]);
+            }
+        }
+
+        if (isset($request['images'])) {
+            ImagesProducts::where('product_id', $product_id)->delete();
+            foreach ($request['images'] as $image) {
+                $path = $image->store('images', 'public'); // Сохраняем в storage/app/public/images
+                $imageRecord = Image::create([
+                    'path' => $path,
+                ]);
+                $product->images()->attach($imageRecord->id);
+            }
+        }
     }
 }
