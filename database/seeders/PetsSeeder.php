@@ -15,27 +15,27 @@ class PetsSeeder extends Seeder
     {
         Pet::create([
             'title' => 'Собаки',
-            'image' => '/путь/до/img/sobaki.webp',
+            'image' => 'images/sobaki.png',
         ]);
 
         Pet::create([
             'title' => 'Кошки',
-            'image' => '/путь/до/img/koshki.webp',
+            'image' => 'images/kowki.png',
         ]);
 
         Pet::create([
             'title' => 'Пернатые',
-            'image' => '/путь/до/img/pernatie.webp',
+            'image' => 'images/pernatie.png',
         ]);
 
         Pet::create([
             'title' => 'Грызуны',
-            'image' => '/путь/до/img/spinogrizi.webp',
+            'image' => 'images/grizuni.png',
         ]);
 
         Pet::create([
             'title' => 'Рыбки',
-            'image' => '/путь/до/img/ribki.webp',
+            'image' => 'images/ribi.png',
         ]);
 
     }
