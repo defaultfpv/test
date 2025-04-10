@@ -7,7 +7,7 @@ use App\Models\User;
 class UserService
 {
 
-    // смена роли пользователю
+    // получить всех пользователь
     public function users()
     {
         $allUsers = User::all();
@@ -17,6 +17,22 @@ class UserService
         }
         return $users;
     }
+
+
+    // поиск пользователей по имени или фамилии
+    public function search($text)
+    {
+        $allUsers = User::where('first_name', 'like', '%' . $text . '%')
+             ->orWhere('last_name', 'like', '%' . $text . '%')
+             ->get();
+        if ($allUsers->isEmpty()) return false;
+        foreach ($allUsers as $user) {
+            if ($user['role'] === 'admin') continue;
+            $users[] = $this->filter($user);
+        }
+        return $users;
+    }
+
 
     // фильтрация информации о пользователе
     public function filter($user)

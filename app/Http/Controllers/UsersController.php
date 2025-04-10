@@ -84,6 +84,40 @@ class UsersController extends Controller
 
 
     /**
+    * @OA\Get(
+    *     path="/users/search",
+    *     tags={"Пользователи"},
+    *     summary="Поиск пользователей по имени или фамилии",
+    *     @OA\Parameter(name="search", in="query", required=true, description="поисковой запрос", @OA\Schema(type="string")),
+    *     @OA\Response(
+    *         response=200,
+    *         description="Success",
+    *         @OA\JsonContent(
+    *             type="object",
+    *             @OA\Property(property="users", type="array",
+    *                 @OA\Items(
+    *                     ref="#/components/schemas/User"
+    *                 )
+    *             )
+    *         )
+    *     ),
+    *     security={{"bearerAuth": {}}}
+    * )
+    */
+    public function search(Request $request)
+    {
+        $user = $request->user();
+        if ($user['role'] != 'admin') return response()->json(['message' => 'Это действие может выполнить только администратор'], 403);
+        $get = request()->query();
+        if (!array_key_exists('search', $_GET)) return response()->json(['message' => 'Не найден необходимый ключ'], 403);
+        $users = $this->userService->search($_GET['search']);
+        if (!$users) return response()->json(['massage' => 'not resoult'], 404);
+        return response()->json(['users' => $users], 200);
+    }
+
+
+
+    /**
     * @OA\Post(
     *     path="/users/changerole/{user_id}",
     *     tags={"Пользователи"},

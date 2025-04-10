@@ -648,6 +648,51 @@
                 ]
             }
         },
+        "/users/search": {
+            "get": {
+                "tags": [
+                    "Пользователи"
+                ],
+                "summary": "Поиск пользователей по имени или фамилии",
+                "operationId": "5923d16af0ed79c00d02057cea3882e1",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "поисковой запрос",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "users": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/User"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/users/changerole/{user_id}": {
             "post": {
                 "tags": [

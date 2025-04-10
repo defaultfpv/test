@@ -22,6 +22,7 @@ Route::prefix('auth')->group(function () {
 Route::prefix('users')->group(function () {
     Route::middleware('auth:token')->get('me', [UsersController::class, 'me']);
     Route::middleware('auth:token')->get('', [UsersController::class, 'all']);
+    Route::middleware('auth:token')->get('search', [UsersController::class, 'search']);
     Route::middleware('auth:token')->post('changerole/{user_id}', [UsersController::class, 'changerole']);
 });
 
