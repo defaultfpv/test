@@ -265,6 +265,82 @@
                 }
             }
         },
+        "/message": {
+            "post": {
+                "tags": [
+                    "Сообщения"
+                ],
+                "summary": "Отправить запрос ai",
+                "operationId": "6d505846be0342c8fdd2142da5a359dc",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "text"
+                                ],
+                                "properties": {
+                                    "text": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "messages": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Message"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/messages": {
+            "get": {
+                "tags": [
+                    "Сообщения"
+                ],
+                "summary": "Получить список сообщений",
+                "operationId": "e23f40cab637ca507d45be62d0084476",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "messages": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Message"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/product/{section_id}/{pet_id}": {
             "post": {
                 "tags": [
@@ -866,6 +942,46 @@
                 },
                 "type": "object"
             },
+            "Message": {
+                "properties": {
+                    "author": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "products": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductMini"
+                        },
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ProductMini": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "image": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "Product": {
                 "properties": {
                     "id": {
@@ -900,6 +1016,9 @@
                                     "type": "array",
                                     "items": {
                                         "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
                                             "description": {
                                                 "type": "string"
                                             },
@@ -1048,6 +1167,10 @@
         },
         {
             "name": "Товары",
+            "description": ""
+        },
+        {
+            "name": "Сообщения",
             "description": ""
         }
     ]

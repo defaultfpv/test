@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\BasketController;
+use App\Http\Controllers\MessageController;
 
 // документация
 Route::get('/dist', function () {
@@ -46,7 +48,15 @@ Route::get('/images/{filename}', function ($filename) {
 });
 
 // корзина
-Route::prefix('users')->group(function () {
-    Route::middleware('auth:token')->get('me', [UsersController::class, 'me']);
+Route::prefix('basket')->group(function () {
+    Route::middleware('auth:token')->post('plus/{id}', [BasketController::class, 'plus']);
+    Route::middleware('auth:token')->post('minus/{id}', [BasketController::class, 'minus']);
+    Route::middleware('auth:token')->delete('delete/{id}', [BasketController::class, 'delete_position']);
+    Route::middleware('auth:token')->delete('clean', [BasketController::class, 'clean_basket']);
+    Route::middleware('auth:token')->get('', [BasketController::class, 'basket']);
 });
+
+// Сообщения
+Route::middleware('auth:token')->get('messages', [MessageController::class, 'messages']);
+Route::middleware('auth:token')->post('message', [MessageController::class, 'message']);
 

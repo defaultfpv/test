@@ -32,12 +32,13 @@ class ProductService
         }
         $product['images'] = $images_pathes;
 
-        $check = ProductsVariety::find($product_id);
+        $check = ProductsVariety::where('product_id', $product_id)->first();
         if ($check) {
             $products_variety = ProductsVariety::where('product_id', $product_id)->get();
             $x = 0;
             foreach ($products_variety as $product_variety) {
                 $variety = Variety::find($product_variety['variety_id']);
+                $varietyes[$variety['title']][$x]['id'] = $product_variety['id'];
                 $varietyes[$variety['title']][$x]['description'] = $product_variety['variety_description'];
                 $varietyes[$variety['title']][$x]['price'] = $product_variety['price'];
                 $x++;

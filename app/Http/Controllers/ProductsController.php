@@ -233,6 +233,7 @@ class ProductsController extends Controller
     *          @OA\Items(
     *              @OA\Property(property="variety_title", type="array",
     *                  @OA\Items(
+    *                      @OA\Property(property="id", type="integer"),
     *                      @OA\Property(property="description", type="string"),
     *                      @OA\Property(property="price", type="integer")
     *                  )

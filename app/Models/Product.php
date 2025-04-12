@@ -21,5 +21,10 @@ class Product extends Model
     {
         return $this->belongsToMany(Option::class, 'products_options');
     }
+
+    public function Message()
+    {
+        return $this->belongsToMany(Message::class, 'messages_products');
+    }
     
 }

@@ -37,6 +37,11 @@ namespace App\Swagger;
  *     name="Корзина",
  *     description=""
  * )
+ *
+ * @OA\Tag(
+ *     name="Сообщения",
+ *     description=""
+ * )
  */
 class Swagger
 {
