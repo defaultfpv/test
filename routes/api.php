@@ -41,8 +41,6 @@ Route::get('products/{section_id}/{pet_id}', [ProductsController::class, 'produc
 Route::get('product/{product_id}', [ProductsController::class, 'product']);
 Route::get('related/products/{product_id}', [ProductsController::class, 'related']);
 
-
-
 // корзина
 Route::prefix('basket')->group(function () {
     Route::middleware('auth:token')->post('plus/{id}', [BasketController::class, 'plus']);
@@ -56,3 +54,9 @@ Route::prefix('basket')->group(function () {
 Route::middleware('auth:token')->get('messages', [MessageController::class, 'messages']);
 Route::middleware('auth:token')->post('message', [MessageController::class, 'message']);
 
+// изображения
+Route::get('/images/{filename}', function ($filename) {
+    $path = storage_path('app/public/images/' . $filename);
+    if (!File::exists($path)) abort(404);
+    return response()->file($path);
+});
