@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckToken;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CatalogController;
@@ -40,12 +41,7 @@ Route::get('products/{section_id}/{pet_id}', [ProductsController::class, 'produc
 Route::get('product/{product_id}', [ProductsController::class, 'product']);
 Route::get('related/products/{product_id}', [ProductsController::class, 'related']);
 
-// изображения
-Route::get('/images/{filename}', function ($filename) {
-    $path = storage_path('app/public/images/' . $filename);
-    if (!File::exists($path)) abort(404);
-    return response()->file($path);
-});
+
 
 // корзина
 Route::prefix('basket')->group(function () {

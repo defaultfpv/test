@@ -32,12 +32,23 @@ class MessageService
                     "created_at" => $item->created_at
                 ];
                 $products = $item->products;
-                if (count($products) > 0)
-                $response[] = [
-                    "author" => 'bot',
-                    "products" => $products,
-                    "created_at" => $item->created_at
-                ];
+                if (count($products) > 0){
+                    $filter_products = [];
+                    foreach ($products as $product) {
+                        $images = $product->images->first();
+                        $filter_products[] = [
+                            "id" => $product['id'],
+                            "title" => $product['title'],
+                            "price" => $product['price'],
+                            "image" => $images['path'],
+                        ];
+                    }
+                    $response[] = [
+                        "author" => 'bot',
+                        "products" => $filter_products,
+                        "created_at" => $item->created_at
+                    ];
+                }
             }
         }
         
@@ -150,20 +161,7 @@ class MessageService
             ];
         }
         $save_messages = $this->saveMessage($request, $products, $response[0]);
-        $messages = [
-            [
-                "author" => "bot",
-                "message" => $response[0],
-                "created_at" => $save_messages
-            ]
-
-        ];
-        if ($products) 
-        $messages[] = [
-            "author" => "bot",
-            "products" => $products,
-            "created_at" => $save_messages
-        ];
+        $messages = $this->messages($request);
         return  $messages;
     }
 

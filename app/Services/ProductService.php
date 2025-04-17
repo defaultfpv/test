@@ -78,7 +78,7 @@ class ProductService
         if (isset($request['variety'])) {
             foreach ($request['variety'] as $variety) {
                 ProductsVariety::create([
-                    'variety_id' => $variety['variety_id'],
+                    'variety_id' => 1,
                     'product_id' => $product->id,
                     'variety_description' => $variety['description'],
                     'price' => $variety['price'],

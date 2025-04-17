@@ -161,6 +161,80 @@
                 ]
             }
         },
+        "/basket/plus/{type_id}": {
+            "post": {
+                "tags": [
+                    "Корзина"
+                ],
+                "summary": "Добавить один товар в корзину",
+                "operationId": "bbb101b4c1fa64f99368f26567c6d513",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "type"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/basket/minus/{type_id}": {
+            "post": {
+                "tags": [
+                    "Корзина"
+                ],
+                "summary": "Убрать один товар из корзины",
+                "operationId": "0511be2d14523bf514584e6f9e084030",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "type"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/sections": {
             "get": {
                 "tags": [
@@ -1167,6 +1241,10 @@
         },
         {
             "name": "Товары",
+            "description": ""
+        },
+        {
+            "name": "Корзина",
             "description": ""
         },
         {
