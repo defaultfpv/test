@@ -19,8 +19,33 @@ class BasketController extends Controller
         $this->basketService = $basketService;
     }
 
-
-
+    /**
+    * @OA\Get(
+    *     path="/basket",
+    *     tags={"Корзина"},
+    *     summary="Получить полную информацию о корзине",
+    *     @OA\Response(
+    *         response=200,
+    *         description="Успешный ответ с информацией о корзине",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="basket", type="array",
+    *                 @OA\Items(
+    *                     type="object",
+    *                     @OA\Property(property="id", type="integer", description="Идентификатор товара"),
+    *                     @OA\Property(property="type", type="string", description="Тип товара (product или variety)"),
+    *                     @OA\Property(property="type_id", type="integer", description="Идентификатор типа товара"),
+    *                     @OA\Property(property="title", type="string", description="Название товара"),
+    *                     @OA\Property(property="count", type="integer", description="Количество товара в корзине"),
+    *                     @OA\Property(property="price", type="integer", description="Цена товара"),
+    *                     @OA\Property(property="image", type="string", description="URL изображения товара"),
+    *                     @OA\Property(property="variety", type="string", description="Вариант товара (необязательное поле)")
+    *                 )
+    *             )
+    *         )
+    *     ),
+    *     security={{"bearerAuth": {}}}
+    * )
+    */
     public function basket(Request $request)
     {
         $user = $request->user();
@@ -31,80 +56,127 @@ class BasketController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *     path="/basket/plus/{type_id}",
-     *     tags={"Корзина"},
-     *     summary="Добавить один товар в корзину",
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"type"},
-     *             @OA\Property(property="type", type="string"),
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=204,
-     *         description="Success"
-     *     ),
-     *     security={{"bearerAuth": {}}}
-     * )
-     */
-    public function plus(Request $request, $id)
+    * @OA\Post(
+    *     path="/basket/plus/variety/{variety_id}",
+    *     tags={"Корзина"},
+    *     summary="Добавить вариант товара в корзину",
+    *     @OA\Response(
+    *         response=204,
+    *         description="Success"
+    *     ),
+    *     security={{"bearerAuth": {}}}
+    * )
+    */
+    public function plus_variety(Request $request, $id)
     {        
-        if (!array_key_exists('type', $request->all())) return response()->json(['massage' => 'The required key was not found.'], 403);
-        if ($request->all()['type'] !== 'product' and $request->all()['type'] !== 'variety') return response()->json(['massage' => "Invalid 'type' key value. The value of the 'type' key can only be 'product' or 'variety'."], 403);
-        if ($request->all()['type'] === 'product') if (!Product::find($id)) return response()->json(['massage' => 'Product not found'], 404);
-        if ($request->all()['type'] === 'variety') if (!ProductsVariety::find($id)) return response()->json(['massage' => 'Variety not found'], 404);
-        
-        $plus = $this->basketService->plus($request, $id);
-
+        if (!ProductsVariety::find($id)) return response()->json(['massage' => 'Variety not found'], 404);
+        $plus = $this->basketService->plus($request, 'variety', $id);
         return response()->json(['massage' => 'Success'], 204);
     }
 
 
     /**
-     * @OA\Post(
-     *     path="/basket/minus/{type_id}",
-     *     tags={"Корзина"},
-     *     summary="Убрать один товар из корзины",
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"type"},
-     *             @OA\Property(property="type", type="string"),
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=204,
-     *         description="Success"
-     *     ),
-     *     security={{"bearerAuth": {}}}
-     * )
-     */
-    public function minus(Request $request, $id)
-    {
-        if (!array_key_exists('type', $request->all())) return response()->json(['massage' => 'The required key was not found.'], 403);
-        if ($request->all()['type'] !== 'product' and $request->all()['type'] !== 'variety') return response()->json(['massage' => "Invalid 'type' key value. The value of the 'type' key can only be 'product' or 'variety'."], 403);
-        if ($request->all()['type'] === 'product') if (!Product::find($id)) return response()->json(['massage' => 'Product not found'], 404);
-        if ($request->all()['type'] === 'variety') if (!ProductsVariety::find($id)) return response()->json(['massage' => 'Variety not found'], 404);
-        
-        $plus = $this->basketService->minus($request, $id);
-        if (!$plus) return response()->json(['massage' => 'The current bucket position was not found'], 404);
+    * @OA\Post(
+    *     path="/basket/plus/product/{product_id}",
+    *     tags={"Корзина"},
+    *     summary="Добавить товар в корзину",
+    *     @OA\Response(
+    *         response=204,
+    *         description="Success"
+    *     ),
+    *     security={{"bearerAuth": {}}}
+    * )
+    */
+    public function plus_product(Request $request, $id)
+    {        
+        if (!Product::find($id)) return response()->json(['massage' => 'Product not found'], 404);
+        $plus = $this->basketService->plus($request, 'product', $id);
+        return response()->json(['massage' => 'Success'], 204);
+    }
 
+
+    /**
+    * @OA\Post(
+    *     path="/basket/minus/variety/{variety_id}",
+    *     tags={"Корзина"},
+    *     summary="Убрать один вариант товара из корзины",
+    *     @OA\Response(
+    *         response=204,
+    *         description="Success"
+    *     ),
+    *     security={{"bearerAuth": {}}}
+    * )
+    */
+    public function minus_variety(Request $request, $id)
+    {
+        if (!ProductsVariety::find($id)) return response()->json(['massage' => 'Variety not found'], 404);
+        $plus = $this->basketService->minus($request, 'variety', $id);
+        if (!$plus) return response()->json(['massage' => 'The current bucket position was not found'], 404);
+        return response()->json(['massage' => 'Success'], 204);
+    }
+
+    
+    
+    /**
+    * @OA\Post(
+    *     path="/basket/minus/product/{product_id}",
+    *     tags={"Корзина"},
+    *     summary="Убрать один товар из корзины",
+    *     @OA\Response(
+    *         response=204,
+    *         description="Success"
+    *     ),
+    *     security={{"bearerAuth": {}}}
+    * )
+    */
+    public function minus_product(Request $request, $id)
+    {        
+        if (!Product::find($id)) return response()->json(['massage' => 'Product not found'], 404);
+        $plus = $this->basketService->minus($request, 'product', $id);
+        if (!$plus) return response()->json(['massage' => 'The current bucket position was not found'], 404);
+        return response()->json(['massage' => 'Success'], 204);
+    }
+
+
+    /**
+    * @OA\Delete(
+    *     path="/basket/delete/{position_id}",
+    *     tags={"Корзина"},
+    *     summary="Удалить позицию из корзины",
+    *     @OA\Response(
+    *         response=204,
+    *         description="Success"
+    *     ),
+    *     security={{"bearerAuth": {}}}
+    * )
+    */
+    public function delete_position(Request $request, $position_id)
+    {
+        $position = Basket::find($position_id);
+        if (!$position) return response()->json(['massage' => 'The current bucket position was not found'], 404);
+        $delete = $this->basketService->delete_position($position_id);
         return response()->json(['massage' => 'Success'], 204);
     }
 
 
 
-    public function delete_position(Request $request, $product_id)
+    /**
+    * @OA\Delete(
+    *     path="/basket/clean",
+    *     tags={"Корзина"},
+    *     summary="Очистить корзину пользователю",
+    *     @OA\Response(
+    *         response=204,
+    *         description="Success"
+    *     ),
+    *     security={{"bearerAuth": {}}}
+    * )
+    */
+    public function clean_basket(Request $request)
     {
-
+        $basket = Basket::where('user_id', $request->user()['id'])->delete();
+        return response()->json(['massage' => 'Success'], 204);
     }
-
-    // public function clean_basket(Request $request)
-    // {
-
-    // }
 
 
 }

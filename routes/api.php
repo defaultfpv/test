@@ -43,9 +43,11 @@ Route::get('related/products/{product_id}', [ProductsController::class, 'related
 
 // корзина
 Route::prefix('basket')->group(function () {
-    Route::middleware('auth:token')->post('plus/{id}', [BasketController::class, 'plus']);
-    Route::middleware('auth:token')->post('minus/{id}', [BasketController::class, 'minus']);
-    Route::middleware('auth:token')->delete('delete/{id}', [BasketController::class, 'delete_position']);
+    Route::middleware('auth:token')->post('plus/variety/{id}', [BasketController::class, 'plus_variety']);
+    Route::middleware('auth:token')->post('plus/product/{id}', [BasketController::class, 'plus_product']);
+    Route::middleware('auth:token')->post('minus/variety/{id}', [BasketController::class, 'minus_variety']);
+    Route::middleware('auth:token')->post('minus/product/{id}', [BasketController::class, 'minus_product']);
+    Route::middleware('auth:token')->delete('delete/{position_id}', [BasketController::class, 'delete_position']);
     Route::middleware('auth:token')->delete('clean', [BasketController::class, 'clean_basket']);
     Route::middleware('auth:token')->get('', [BasketController::class, 'basket']);
 });

@@ -161,31 +161,81 @@
                 ]
             }
         },
-        "/basket/plus/{type_id}": {
-            "post": {
+        "/basket": {
+            "get": {
                 "tags": [
                     "Корзина"
                 ],
-                "summary": "Добавить один товар в корзину",
-                "operationId": "bbb101b4c1fa64f99368f26567c6d513",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "type"
-                                ],
-                                "properties": {
-                                    "type": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
+                "summary": "Получить полную информацию о корзине",
+                "operationId": "ff975662dcd0a8541f5b15e6f42907e2",
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ с информацией о корзине",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "basket": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "Идентификатор товара",
+                                                        "type": "integer"
+                                                    },
+                                                    "type": {
+                                                        "description": "Тип товара (product или variety)",
+                                                        "type": "string"
+                                                    },
+                                                    "type_id": {
+                                                        "description": "Идентификатор типа товара",
+                                                        "type": "integer"
+                                                    },
+                                                    "title": {
+                                                        "description": "Название товара",
+                                                        "type": "string"
+                                                    },
+                                                    "count": {
+                                                        "description": "Количество товара в корзине",
+                                                        "type": "integer"
+                                                    },
+                                                    "price": {
+                                                        "description": "Цена товара",
+                                                        "type": "integer"
+                                                    },
+                                                    "image": {
+                                                        "description": "URL изображения товара",
+                                                        "type": "string"
+                                                    },
+                                                    "variety": {
+                                                        "description": "Вариант товара (необязательное поле)",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
                             }
                         }
                     }
                 },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/basket/plus/variety/{variety_id}": {
+            "post": {
+                "tags": [
+                    "Корзина"
+                ],
+                "summary": "Добавить вариант товара в корзину",
+                "operationId": "a434460740ecd0f1cbf1491134215362",
                 "responses": {
                     "204": {
                         "description": "Success"
@@ -198,31 +248,89 @@
                 ]
             }
         },
-        "/basket/minus/{type_id}": {
+        "/basket/plus/product/{product_id}": {
+            "post": {
+                "tags": [
+                    "Корзина"
+                ],
+                "summary": "Добавить товар в корзину",
+                "operationId": "271d07ae9622ccbe58ce65ed8edbdb0b",
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/basket/minus/variety/{variety_id}": {
+            "post": {
+                "tags": [
+                    "Корзина"
+                ],
+                "summary": "Убрать один вариант товара из корзины",
+                "operationId": "736ad7b7fb35e60994fb00de724756d7",
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/basket/minus/product/{product_id}": {
             "post": {
                 "tags": [
                     "Корзина"
                 ],
                 "summary": "Убрать один товар из корзины",
-                "operationId": "0511be2d14523bf514584e6f9e084030",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "type"
-                                ],
-                                "properties": {
-                                    "type": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
+                "operationId": "4e6e0cb9498dbe81d16847cbb1fd25bd",
+                "responses": {
+                    "204": {
+                        "description": "Success"
                     }
                 },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/basket/delete/{position_id}": {
+            "delete": {
+                "tags": [
+                    "Корзина"
+                ],
+                "summary": "Удалить позицию из корзины",
+                "operationId": "36fe9b74333ff0a9936951c53aa27f22",
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/basket/clean": {
+            "delete": {
+                "tags": [
+                    "Корзина"
+                ],
+                "summary": "Очистить корзину пользователю",
+                "operationId": "0a5384de56c03d671d620fabb7ea3d7e",
                 "responses": {
                     "204": {
                         "description": "Success"
