@@ -648,6 +648,16 @@
                 ],
                 "summary": "Получить товар",
                 "operationId": "00b58b3ecec2f83040d3520c6985be50",
+                "parameters": [
+                    {
+                        "name": "product_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -1062,9 +1072,11 @@
                         "type": "integer"
                     },
                     "title": {
+                        "description": "Название товара",
                         "type": "string"
                     },
                     "description": {
+                        "description": "Описание товара",
                         "type": "string"
                     },
                     "structure": {
@@ -1086,22 +1098,14 @@
                         "type": "array",
                         "items": {
                             "properties": {
-                                "variety_title": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer"
-                                            },
-                                            "description": {
-                                                "type": "string"
-                                            },
-                                            "price": {
-                                                "type": "integer"
-                                            }
-                                        },
-                                        "type": "object"
-                                    }
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "price": {
+                                    "type": "integer"
                                 }
                             },
                             "type": "object"

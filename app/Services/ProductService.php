@@ -38,9 +38,9 @@ class ProductService
             $x = 0;
             foreach ($products_variety as $product_variety) {
                 $variety = Variety::find($product_variety['variety_id']);
-                $varietyes[$variety['title']][$x]['id'] = $product_variety['id'];
-                $varietyes[$variety['title']][$x]['description'] = $product_variety['variety_description'];
-                $varietyes[$variety['title']][$x]['price'] = $product_variety['price'];
+                $varietyes[$x]['id'] = $product_variety['id'];
+                $varietyes[$x]['description'] = $product_variety['variety_description'];
+                $varietyes[$x]['price'] = $product_variety['price'];
                 $x++;
             }
             $product['variety'] = $varietyes;

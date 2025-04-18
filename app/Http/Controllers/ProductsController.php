@@ -204,53 +204,55 @@ class ProductsController extends Controller
 
 
 
-       /**
-    * @OA\Get(
-    *     path="/products/{product_id}",
-    *     tags={"Товары"},
-    *     summary="Получить товар",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Success",
-    *         @OA\JsonContent(
-    *             @OA\Property(property="product", type="object", ref="#/components/schemas/Product")
-    *         )
-    *     ),
-    * )
-    *
-    * @OA\Schema(
-    *      schema="Product",
-    *      @OA\Property(property="id", type="integer"),
-    *      @OA\Property(property="title", type="string"),
-    *      @OA\Property(property="description", type="string"),
-    *      @OA\Property(property="structure", type="string"),
-    *      @OA\Property(property="features", type="string"),
-    *      @OA\Property(property="price", type="integer"),
-    *      @OA\Property(property="images", type="array",
-    *          @OA\Items(
-    *              type="string"
-    *          )
-    *      ),
-    *      @OA\Property(property="variety", type="array",
-    *          @OA\Items(
-    *              @OA\Property(property="variety_title", type="array",
-    *                  @OA\Items(
-    *                      @OA\Property(property="id", type="integer"),
-    *                      @OA\Property(property="description", type="string"),
-    *                      @OA\Property(property="price", type="integer")
-    *                  )
-    *              )
-    *          )
-    *      ),
-    *      @OA\Property(property="specifications", type="array",
-    *          @OA\Items(
-    *              @OA\Property(property="title", type="string"),
-    *              @OA\Property(property="value", type="string")
-    *          )
-    *      )
-    * )
-    *
-    */
+/**
+ * @OA\Get(
+ *     path="/products/{product_id}",
+ *     tags={"Товары"},
+ *     summary="Получить товар",
+ *     @OA\Parameter(
+ *         name="product_id",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Success",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="product", type="object", ref="#/components/schemas/Product")
+ *         )
+ *     ),
+ * )
+ *
+ * @OA\Schema(
+ *      schema="Product",
+ *      @OA\Property(property="id", type="integer"),
+ *      @OA\Property(property="title", type="string", description="Название товара"),
+ *      @OA\Property(property="description", type="string", description="Описание товара"),
+ *      @OA\Property(property="structure", type="string"),
+ *      @OA\Property(property="features", type="string"),
+ *      @OA\Property(property="price", type="integer"),
+ *      @OA\Property(property="images", type="array",
+ *          @OA\Items(type="string")
+ *      ),
+ *      @OA\Property(property="variety", type="array",
+ *          @OA\Items(
+ *              type="object",
+ *              @OA\Property(property="id", type="integer"),
+ *              @OA\Property(property="description", type="string"),
+ *              @OA\Property(property="price", type="integer")
+ *          )
+ *      ),
+ *      @OA\Property(property="specifications", type="array",
+ *          @OA\Items(
+ *              type="object",
+ *              @OA\Property(property="title", type="string"),
+ *              @OA\Property(property="value", type="string")
+ *          )
+ *      )
+ * )
+ */
+
     public function product($product_id)
     {
         $check = Product::find($product_id);
