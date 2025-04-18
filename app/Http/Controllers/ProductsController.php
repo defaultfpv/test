@@ -96,7 +96,9 @@ class ProductsController extends Controller
             'filters_options_value' => 'array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:12048',
         ]);
-
+        
+        if (!array_key_exists('images', $request->all())) return response()->json(['message' => "Иди в задницу и добавь картинку по нормальному"], 400);
+        else if ($request->all()['images'][0] == '') return response()->json(['message' => "Уже лучше, но все равно иди в дупу, ты сейчас отправил ключ, но картинки в нем нет"], 400);
         $create = $this->productService->create($request, $section_id, $section_pet_id);
 
         if (!$create) return response()->json(['message' => "Product created successfully!"], 201);
