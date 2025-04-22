@@ -328,7 +328,7 @@ class ProductService
             }
         }
 
-        if (isset($request['images'])) {
+        if (array_key_exists('images', $request) ) {
             ImagesProducts::where('product_id', $product_id)->delete();
             foreach ($request['images'] as $image) {
                 $path = $image->store('images', 'public'); // Сохраняем в storage/app/public/images
