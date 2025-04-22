@@ -49,7 +49,8 @@ class BasketController extends Controller
     public function basket(Request $request)
     {
         $user = $request->user();
-        if (!Basket::where('user_id', $user['id'])->first()) return response()->json(['massage' => 'The basket is empty'], 404);
+        $basket = [];
+        if (!Basket::where('user_id', $user['id'])->first()) return response()->json(['massage' => $basket], 200);
         
         $basket = $this->basketService->basket($request);
         return response()->json(['basket' => $basket], 200);
