@@ -1069,13 +1069,44 @@
                 ]
             }
         },
-        "/users/changerole/{user_id}": {
+        "/users/changerole/manager/{user_id}": {
             "post": {
                 "tags": [
                     "Пользователи"
                 ],
-                "summary": "Сменить роль пользователю: user/manager",
-                "operationId": "575e3300761b0d0f792db68ef4d51494",
+                "summary": "Сменить роль пользователю на менеджера и обратно",
+                "operationId": "750d92c1b5b9a11c937fa0c7908fcef9",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/users/changerole/admin/{user_id}": {
+            "post": {
+                "tags": [
+                    "Пользователи"
+                ],
+                "summary": "Сменить роль пользователю на админа и обратно",
+                "operationId": "058c076277cf8d1558f3e9b3f2653a62",
                 "responses": {
                     "200": {
                         "description": "Success",

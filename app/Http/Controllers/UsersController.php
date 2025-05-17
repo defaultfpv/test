@@ -78,7 +78,7 @@ class UsersController extends Controller
     {
         $user = $request->user();
         if ($user['role'] != 'admin') return response()->json(['message' => 'you dont have the rights to perform this action'], 403);
-        $users = $this->userService->users();
+        $users = $this->userService->users($user);
         return response()->json(['users' => $users], 200);
     }
 
@@ -119,9 +119,9 @@ class UsersController extends Controller
 
     /**
     * @OA\Post(
-    *     path="/users/changerole/{user_id}",
+    *     path="/users/changerole/manager/{user_id}",
     *     tags={"Пользователи"},
-    *     summary="Сменить роль пользователю: user/manager", 
+    *     summary="Сменить роль пользователю на менеджера и обратно", 
     *     @OA\Response(
     *         response=200,
     *         description="Success",
@@ -132,11 +132,36 @@ class UsersController extends Controller
     *     security={{"bearerAuth": {}}}
     * )
     */
-    public function changerole(Request $request, $user_id)
+    public function changerole_manager(Request $request, $user_id)
     {
         $user = $request->user();
-        if ($user['role'] != 'admin') return response()->json(['message' => 'you dont have the rights to perform this action'], 403);
-        $changeRole = $this->userService->change_role($user_id);
+        if ($user['role'] != 'admin' or $user['id'] === $user_id) return response()->json(['message' => 'you dont have the rights to perform this action'], 403);
+        $changeRole = $this->userService->changerole_manager($user_id);
+        if (!$changeRole) return response()->json(['message' => 'user not found'], 404);
+        return response()->json(['message' => 'success'], 200);
+    }
+
+
+    /**
+    * @OA\Post(
+    *     path="/users/changerole/admin/{user_id}",
+    *     tags={"Пользователи"},
+    *     summary="Сменить роль пользователю на админа и обратно", 
+    *     @OA\Response(
+    *         response=200,
+    *         description="Success",
+    *         @OA\JsonContent(
+    *             @OA\Property(property="message", type="string")
+    *         )
+    *     ),
+    *     security={{"bearerAuth": {}}}
+    * )
+    */
+    public function changerole_admin(Request $request, $user_id)
+    {
+        $user = $request->user();
+        if ($user['role'] != 'admin' or $user['id'] === $user_id) return response()->json(['message' => 'you dont have the rights to perform this action'], 403);
+        $changeRole = $this->userService->changerole_admin($user_id);
         if (!$changeRole) return response()->json(['message' => 'user not found'], 404);
         return response()->json(['message' => 'success'], 200);
     }

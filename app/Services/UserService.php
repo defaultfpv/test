@@ -8,11 +8,11 @@ class UserService
 {
 
     // получить всех пользователь
-    public function users()
+    public function users($me)
     {
         $allUsers = User::all();
         foreach ($allUsers as $user) {
-            if ($user['role'] === 'admin') continue;
+            if ($user['id'] === $me['id']) continue;
             $users[] = $this->filter($user);
         }
         return $users;
@@ -48,12 +48,24 @@ class UserService
     }
 
 
-    // смена роли пользователю
-    public function change_role($user_id)
+    // смена роли пользователю на менеджера и назад
+    public function changerole_manager($user_id)
     {
         $user = User::find($user_id);
         if (!$user) return false;
-        if ($user->role === 'user') $user->role = 'manager';
+        if ($user->role != 'manager') $user->role = 'manager';
+        else $user->role = 'user';
+        $user->save();
+        return true;
+    }
+
+
+    // смена роли пользователю на админа и назад
+    public function changerole_admin($user_id)
+    {
+        $user = User::find($user_id);
+        if (!$user) return false;
+        if ($user->role != 'admin') $user->role = 'admin';
         else $user->role = 'user';
         $user->save();
         return true;
